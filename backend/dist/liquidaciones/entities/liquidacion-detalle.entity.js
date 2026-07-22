@@ -20,6 +20,7 @@ let LiquidacionDetalle = class LiquidacionDetalle {
     concepto_id;
     concepto;
     cantidad;
+    base_imponible;
     monto;
 };
 exports.LiquidacionDetalle = LiquidacionDetalle;
@@ -49,6 +50,10 @@ __decorate([
     (0, typeorm_1.Column)({ type: 'numeric', precision: 10, scale: 2, default: 1 }),
     __metadata("design:type", Number)
 ], LiquidacionDetalle.prototype, "cantidad", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'numeric', precision: 12, scale: 2, nullable: true }),
+    __metadata("design:type", Object)
+], LiquidacionDetalle.prototype, "base_imponible", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'numeric', precision: 12, scale: 2 }),
     __metadata("design:type", Number)

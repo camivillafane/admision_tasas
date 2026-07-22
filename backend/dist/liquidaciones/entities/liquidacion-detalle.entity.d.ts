@@ -7,5 +7,6 @@ export declare class LiquidacionDetalle {
     concepto_id: number;
     concepto: Concepto;
     cantidad: number;
+    base_imponible: number | null;
     monto: number;
 }

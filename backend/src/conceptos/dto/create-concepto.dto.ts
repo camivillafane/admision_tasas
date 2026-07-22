@@ -13,6 +13,10 @@ export class CreateConceptoDto {
   @IsIn(['tasa', 'recargo', 'exencion'])
   tipo: 'tasa' | 'recargo' | 'exencion';
 
+  @IsBoolean()
+  @IsOptional()
+  es_porcentaje?: boolean;
+
   @IsNumber()
   valor: number;
 

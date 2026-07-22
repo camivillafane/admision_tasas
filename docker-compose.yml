@@ -4,16 +4,69 @@ services:
     container_name: admision-sqlserver
     restart: unless-stopped
     user: root
-
     environment:
       ACCEPT_EULA: "Y"
       SA_PASSWORD: "Camiadmision1234!"
-
+      MSSQL_PID: "Express"
     ports:
       - "1433:1433"
-
     volumes:
       - sqlserver_volume:/var/opt/mssql/data
+      - ./database:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "(/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P 'Camiadmision1234!' -Q 'SELECT 1' >/dev/null 2>&1) || (/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Camiadmision1234!' -C -Q 'SELECT 1' >/dev/null 2>&1) || exit 1",
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 30s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: admision-backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      DB_HOST: sqlserver
+      DB_PORT: "1433"
+      DB_USERNAME: SA
+      DB_PASSWORD: Camiadmision1234!
+      DB_NAME: admision
+      JWT_SECRET: admision_secret_key_cambiar_en_produccion
+      PORT: "3000"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:3000/api || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: admision-frontend
+    restart: unless-stopped
+    ports:
+      - "4200:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
 
 volumes:
   sqlserver_volume:

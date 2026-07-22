@@ -17,6 +17,7 @@ let Concepto = class Concepto {
     codigo;
     descripcion;
     tipo;
+    es_porcentaje;
     valor;
     activo;
     detalles;
@@ -38,6 +39,10 @@ __decorate([
     (0, typeorm_1.Column)({ length: 20 }),
     __metadata("design:type", String)
 ], Concepto.prototype, "tipo", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: false }),
+    __metadata("design:type", Boolean)
+], Concepto.prototype, "es_porcentaje", void 0);
 __decorate([
     (0, typeorm_1.Column)({ type: 'numeric', precision: 12, scale: 4 }),
     __metadata("design:type", Number)

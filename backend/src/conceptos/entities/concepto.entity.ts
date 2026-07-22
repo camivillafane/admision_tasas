@@ -15,6 +15,9 @@ export class Concepto {
   @Column({ length: 20 })
   tipo: 'tasa' | 'recargo' | 'exencion';
 
+  @Column({ default: false })
+  es_porcentaje: boolean;
+
   @Column({ type: 'numeric', precision: 12, scale: 4 })
   valor: number;
 

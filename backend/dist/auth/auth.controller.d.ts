@@ -6,9 +6,9 @@ export declare class AuthController {
     login(dto: LoginDto): Promise<{
         access_token: string;
         usuario: {
-            id: any;
-            username: any;
-            nombre: any;
+            id: number;
+            username: string;
+            nombre: string;
         };
     }>;
 }

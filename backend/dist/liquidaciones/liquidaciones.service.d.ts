@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import { Liquidacion } from './entities/liquidacion.entity';
 import { LiquidacionDetalle } from './entities/liquidacion-detalle.entity';
 import { Concepto } from '../conceptos/entities/concepto.entity';
@@ -8,10 +8,16 @@ export declare class LiquidacionesService {
     private readonly liquidacionRepository;
     private readonly detalleRepository;
     private readonly conceptoRepository;
-    constructor(liquidacionRepository: Repository<Liquidacion>, detalleRepository: Repository<LiquidacionDetalle>, conceptoRepository: Repository<Concepto>);
+    private readonly dataSource;
+    constructor(liquidacionRepository: Repository<Liquidacion>, detalleRepository: Repository<LiquidacionDetalle>, conceptoRepository: Repository<Concepto>, dataSource: DataSource);
+    private generarNumero;
+    private calcularDetalles;
     create(dto: CreateLiquidacionDto): Promise<Liquidacion>;
     findAll(): Promise<Liquidacion[]>;
     findOne(id: number): Promise<Liquidacion>;
     update(id: number, dto: UpdateLiquidacionDto): Promise<Liquidacion>;
     remove(id: number): Promise<Liquidacion>;
+    marcarVencidas(): Promise<{
+        afectadas: number;
+    }>;
 }

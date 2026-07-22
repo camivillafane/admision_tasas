@@ -12,6 +12,11 @@ class DetalleLiquidacionDto {
   @IsNumber()
   @Type(() => Number)
   @IsOptional()
+  base_imponible?: number;
+
+  @IsNumber()
+  @Type(() => Number)
+  @IsOptional()
   monto?: number;
 }
 

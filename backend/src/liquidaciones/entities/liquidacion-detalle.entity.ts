@@ -24,6 +24,9 @@ export class LiquidacionDetalle {
   @Column({ type: 'numeric', precision: 10, scale: 2, default: 1 })
   cantidad: number;
 
+  @Column({ type: 'numeric', precision: 12, scale: 2, nullable: true })
+  base_imponible: number | null;
+
   @Column({ type: 'numeric', precision: 12, scale: 2 })
   monto: number;
 }

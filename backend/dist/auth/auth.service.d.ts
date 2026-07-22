@@ -1,6 +1,6 @@
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
-import { Usuario } from '../../usuarios/entities/usuario.entity';
+import { Usuario } from '../usuarios/entities/usuario.entity';
 import { LoginDto } from './dto/login.dto';
 export declare class AuthService {
     private readonly usuarioRepository;
@@ -9,9 +9,9 @@ export declare class AuthService {
     login(dto: LoginDto): Promise<{
         access_token: string;
         usuario: {
-            id: any;
-            username: any;
-            nombre: any;
+            id: number;
+            username: string;
+            nombre: string;
         };
     }>;
 }

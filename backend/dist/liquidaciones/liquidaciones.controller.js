@@ -41,6 +41,9 @@ let LiquidacionesController = class LiquidacionesController {
     remove(id) {
         return this.liquidacionesService.remove(+id);
     }
+    marcarVencidas() {
+        return this.liquidacionesService.marcarVencidas();
+    }
     async pdf(id, res) {
         const liquidacion = await this.liquidacionesService.findOne(+id);
         const buffer = await this.pdfService.generar(liquidacion);
@@ -88,6 +91,12 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], LiquidacionesController.prototype, "remove", null);
+__decorate([
+    (0, common_1.Post)('vencidas'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], LiquidacionesController.prototype, "marcarVencidas", null);
 __decorate([
     (0, common_1.Get)(':id/pdf'),
     __param(0, (0, common_1.Param)('id')),

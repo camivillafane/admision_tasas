@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Patch, Delete, Body, Param, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Response } from 'express';
+import type { Response } from 'express';
 import { LiquidacionesService } from './liquidaciones.service';
 import { PdfService } from './pdf.service';
 import { CreateLiquidacionDto } from './dto/create-liquidacion.dto';
@@ -37,6 +37,11 @@ export class LiquidacionesController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.liquidacionesService.remove(+id);
+  }
+
+  @Post('vencidas')
+  marcarVencidas() {
+    return this.liquidacionesService.marcarVencidas();
   }
 
   @Get(':id/pdf')

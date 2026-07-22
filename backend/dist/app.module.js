@@ -17,11 +17,13 @@ const contribuyente_entity_1 = require("./contribuyentes/entities/contribuyente.
 const concepto_entity_1 = require("./conceptos/entities/concepto.entity");
 const liquidacion_entity_1 = require("./liquidaciones/entities/liquidacion.entity");
 const liquidacion_detalle_entity_1 = require("./liquidaciones/entities/liquidacion-detalle.entity");
+const pago_entity_1 = require("./pagos/entities/pago.entity");
 const auth_module_1 = require("./auth/auth.module");
 const usuarios_module_1 = require("./usuarios/usuarios.module");
 const contribuyentes_module_1 = require("./contribuyentes/contribuyentes.module");
 const conceptos_module_1 = require("./conceptos/conceptos.module");
 const liquidaciones_module_1 = require("./liquidaciones/liquidaciones.module");
+const pagos_module_1 = require("./pagos/pagos.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -32,11 +34,11 @@ exports.AppModule = AppModule = __decorate([
             typeorm_1.TypeOrmModule.forRoot({
                 type: 'mssql',
                 host: process.env.DB_HOST,
-                port: parseInt(process.env.DB_PORT, 10),
+                port: parseInt(process.env.DB_PORT || '1433', 10),
                 username: process.env.DB_USERNAME,
                 password: process.env.DB_PASSWORD,
                 database: process.env.DB_NAME,
-                entities: [usuario_entity_1.Usuario, contribuyente_entity_1.Contribuyente, concepto_entity_1.Concepto, liquidacion_entity_1.Liquidacion, liquidacion_detalle_entity_1.LiquidacionDetalle],
+                entities: [usuario_entity_1.Usuario, contribuyente_entity_1.Contribuyente, concepto_entity_1.Concepto, liquidacion_entity_1.Liquidacion, liquidacion_detalle_entity_1.LiquidacionDetalle, pago_entity_1.Pago],
                 synchronize: false,
                 options: {
                     encrypt: false,
@@ -48,6 +50,7 @@ exports.AppModule = AppModule = __decorate([
             contribuyentes_module_1.ContribuyentesModule,
             conceptos_module_1.ConceptosModule,
             liquidaciones_module_1.LiquidacionesModule,
+            pagos_module_1.PagosModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],

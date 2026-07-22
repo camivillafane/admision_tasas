@@ -16,14 +16,65 @@ exports.UsuariosService = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
+const bcryptjs_1 = require("bcryptjs");
 const usuario_entity_1 = require("./entities/usuario.entity");
 let UsuariosService = class UsuariosService {
     usuarioRepository;
     constructor(usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
+    async create(dto) {
+        const existe = await this.usuarioRepository.findOne({ where: { username: dto.username } });
+        if (existe) {
+            throw new common_1.BadRequestException(`El usuario '${dto.username}' ya existe`);
+        }
+        const usuario = this.usuarioRepository.create({
+            username: dto.username,
+            password_hash: (0, bcryptjs_1.hashSync)(dto.password, 10),
+            nombre: dto.nombre,
+            activo: dto.activo ?? true,
+        });
+        return this.usuarioRepository.save(usuario);
+    }
+    findAll() {
+        return this.usuarioRepository.find({ order: { username: 'ASC' } });
+    }
+    async findOne(id) {
+        const usuario = await this.usuarioRepository.findOne({ where: { id } });
+        if (!usuario)
+            throw new common_1.NotFoundException('Usuario no encontrado');
+        return usuario;
+    }
     findByUsername(username) {
         return this.usuarioRepository.findOne({ where: { username } });
+    }
+    async update(id, dto) {
+        const usuario = await this.findOne(id);
+        if (dto.username && dto.username !== usuario.username) {
+            const existe = await this.usuarioRepository.findOne({ where: { username: dto.username } });
+            if (existe)
+                throw new common_1.BadRequestException(`El usuario '${dto.username}' ya existe`);
+            usuario.username = dto.username;
+        }
+        if (dto.nombre)
+            usuario.nombre = dto.nombre;
+        if (dto.activo !== undefined)
+            usuario.activo = dto.activo;
+        if (dto.password)
+            usuario.password_hash = (0, bcryptjs_1.hashSync)(dto.password, 10);
+        return this.usuarioRepository.save(usuario);
+    }
+    async remove(id) {
+        const usuario = await this.findOne(id);
+        return this.usuarioRepository.remove(usuario);
+    }
+    async cambiarPassword(id, passwordActual, passwordNueva) {
+        const usuario = await this.findOne(id);
+        if (!(0, bcryptjs_1.compareSync)(passwordActual, usuario.password_hash)) {
+            throw new common_1.BadRequestException('La contraseña actual es incorrecta');
+        }
+        usuario.password_hash = (0, bcryptjs_1.hashSync)(passwordNueva, 10);
+        return this.usuarioRepository.save(usuario);
     }
 };
 exports.UsuariosService = UsuariosService;

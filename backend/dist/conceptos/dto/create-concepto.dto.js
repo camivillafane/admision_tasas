@@ -15,6 +15,7 @@ class CreateConceptoDto {
     codigo;
     descripcion;
     tipo;
+    es_porcentaje;
     valor;
     activo;
 }
@@ -34,6 +35,11 @@ __decorate([
     (0, class_validator_1.IsIn)(['tasa', 'recargo', 'exencion']),
     __metadata("design:type", String)
 ], CreateConceptoDto.prototype, "tipo", void 0);
+__decorate([
+    (0, class_validator_1.IsBoolean)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Boolean)
+], CreateConceptoDto.prototype, "es_porcentaje", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
     __metadata("design:type", Number)

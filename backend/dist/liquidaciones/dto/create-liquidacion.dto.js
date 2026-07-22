@@ -15,6 +15,7 @@ const class_transformer_1 = require("class-transformer");
 class DetalleLiquidacionDto {
     concepto_id;
     cantidad;
+    base_imponible;
     monto;
 }
 __decorate([
@@ -26,6 +27,12 @@ __decorate([
     (0, class_transformer_1.Type)(() => Number),
     __metadata("design:type", Number)
 ], DetalleLiquidacionDto.prototype, "cantidad", void 0);
+__decorate([
+    (0, class_validator_1.IsNumber)(),
+    (0, class_transformer_1.Type)(() => Number),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", Number)
+], DetalleLiquidacionDto.prototype, "base_imponible", void 0);
 __decorate([
     (0, class_validator_1.IsNumber)(),
     (0, class_transformer_1.Type)(() => Number),

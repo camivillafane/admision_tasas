@@ -4,6 +4,7 @@ export declare class Concepto {
     codigo: string;
     descripcion: string;
     tipo: 'tasa' | 'recargo' | 'exencion';
+    es_porcentaje: boolean;
     valor: number;
     activo: boolean;
     detalles: LiquidacionDetalle[];
