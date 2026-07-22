@@ -7,7 +7,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
-import { NgFor } from '@angular/common';
 import { ContribuyentesService, Contribuyente } from '../../core/services/contribuyentes.service';
 import { ContribuyenteFormDialogComponent } from './contribuyente-form-dialog/contribuyente-form-dialog.component';
 
@@ -22,7 +21,6 @@ import { ContribuyenteFormDialogComponent } from './contribuyente-form-dialog/co
     MatTableModule,
     MatDialogModule,
     FormsModule,
-    NgFor,
   ],
   templateUrl: './contribuyentes.component.html',
   styleUrl: './contribuyentes.component.scss',

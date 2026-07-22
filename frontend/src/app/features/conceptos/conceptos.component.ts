@@ -4,13 +4,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { NgFor } from '@angular/common';
 import { ConceptosService, Concepto } from '../../core/services/conceptos.service';
 import { ConceptoFormDialogComponent } from './concepto-form-dialog/concepto-form-dialog.component';
 
 @Component({
   selector: 'app-conceptos',
-  imports: [MatCardModule, MatButtonModule, MatIconModule, MatTableModule, MatDialogModule, NgFor],
+  imports: [MatCardModule, MatButtonModule, MatIconModule, MatTableModule, MatDialogModule],
   templateUrl: './conceptos.component.html',
   styleUrl: './conceptos.component.scss',
 })

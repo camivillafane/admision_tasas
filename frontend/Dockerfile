@@ -12,6 +12,8 @@ RUN npm run build -- --configuration production
 # Etapa de producción con nginx
 FROM nginx:alpine
 
+RUN apk add --no-cache curl
+
 COPY --from=builder /app/dist/frontend/browser /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
