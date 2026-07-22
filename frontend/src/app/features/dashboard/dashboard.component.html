@@ -1,0 +1,78 @@
+<h1>Dashboard</h1>
+
+<div class="cards">
+  <mat-card class="card card-pendientes">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>pending</mat-icon>
+      <mat-card-title>Pendientes</mat-card-title>
+      <mat-card-subtitle>{{ pendientes() }} liquidaciones</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+
+  <mat-card class="card card-vencidas">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>warning</mat-icon>
+      <mat-card-title>Vencidas</mat-card-title>
+      <mat-card-subtitle>{{ vencidas() }} liquidaciones</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+
+  <mat-card class="card card-pagadas">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>check_circle</mat-icon>
+      <mat-card-title>Pagadas</mat-card-title>
+      <mat-card-subtitle>{{ pagadas() }} liquidaciones</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+
+  <mat-card class="card card-anuladas">
+    <mat-card-header>
+      <mat-icon mat-card-avatar>cancel</mat-icon>
+      <mat-card-title>Anuladas</mat-card-title>
+      <mat-card-subtitle>{{ anuladas() }} liquidaciones</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+</div>
+
+<mat-card class="total-card">
+  <mat-card-header>
+    <mat-card-title>Total pendiente de cobro</mat-card-title>
+    <mat-card-subtitle>${{ totalPendiente() | number: '1.2-2' }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" routerLink="/liquidaciones/nueva">
+      <mat-icon>add</mat-icon>
+      Nueva liquidación
+    </button>
+  </mat-card-actions>
+</mat-card>
+
+<mat-card class="recent-card">
+  <mat-card-header>
+    <mat-card-title>Últimas liquidaciones</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <table mat-table class="simple-table">
+      <thead>
+        <tr>
+          <th>N°</th>
+          <th>Contribuyente</th>
+          <th>Evento</th>
+          <th>Total</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let l of liquidaciones().slice(0, 5)">
+          <td>{{ l.numero || l.id }}</td>
+          <td>{{ l.contribuyente?.apellido }}, {{ l.contribuyente?.nombre }}</td>
+          <td>{{ l.tipo_evento }}</td>
+          <td>${{ l.total | number: '1.2-2' }}</td>
+          <td>
+            <span class="badge" [class]="'estado-' + l.estado">{{ l.estado }}</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-card-content>
+</mat-card>

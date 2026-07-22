@@ -1,0 +1,60 @@
+.row {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.field-grow {
+  flex: 1 1 300px;
+}
+
+.field {
+  flex: 0 1 220px;
+}
+
+.detalles-card {
+  margin-top: 24px;
+}
+
+.detalle-row {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  padding: 12px;
+  background-color: #fafafa;
+  border-radius: 8px;
+}
+
+.field-concepto {
+  flex: 2 1 250px;
+}
+
+.field-cantidad,
+.field-base,
+.field-monto {
+  flex: 1 1 120px;
+}
+
+.divider {
+  margin: 24px 0;
+}
+
+.total-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.total-label {
+  font-size: 16px;
+}
+
+.total-value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1976d2;
+}

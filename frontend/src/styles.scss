@@ -1,1 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.mat-mdc-form-field {
+  margin-bottom: 8px;
+}
+
+h1 {
+  margin-top: 0;
+  margin-bottom: 24px;
+  font-weight: 500;
+}
