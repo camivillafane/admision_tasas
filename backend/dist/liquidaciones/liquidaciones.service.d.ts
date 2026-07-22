@@ -1,0 +1,17 @@
+import { Repository } from 'typeorm';
+import { Liquidacion } from './entities/liquidacion.entity';
+import { LiquidacionDetalle } from './entities/liquidacion-detalle.entity';
+import { Concepto } from '../conceptos/entities/concepto.entity';
+import { CreateLiquidacionDto } from './dto/create-liquidacion.dto';
+import { UpdateLiquidacionDto } from './dto/update-liquidacion.dto';
+export declare class LiquidacionesService {
+    private readonly liquidacionRepository;
+    private readonly detalleRepository;
+    private readonly conceptoRepository;
+    constructor(liquidacionRepository: Repository<Liquidacion>, detalleRepository: Repository<LiquidacionDetalle>, conceptoRepository: Repository<Concepto>);
+    create(dto: CreateLiquidacionDto): Promise<Liquidacion>;
+    findAll(): Promise<Liquidacion[]>;
+    findOne(id: number): Promise<Liquidacion>;
+    update(id: number, dto: UpdateLiquidacionDto): Promise<Liquidacion>;
+    remove(id: number): Promise<Liquidacion>;
+}
