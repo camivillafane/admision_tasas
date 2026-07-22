@@ -1,0 +1,19 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: admision-sqlserver
+    restart: unless-stopped
+    user: root
+
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Camiadmision1234!"
+
+    ports:
+      - "1433:1433"
+
+    volumes:
+      - sqlserver_volume:/var/opt/mssql/data
+
+volumes:
+  sqlserver_volume:
