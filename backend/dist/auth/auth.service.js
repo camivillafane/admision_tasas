@@ -29,7 +29,6 @@ let AuthService = AuthService_1 = class AuthService {
         this.jwtService = jwtService;
     }
     async login(dto) {
-        this.logger.log(`Intento de login para usuario: ${dto.username}`);
         let usuario;
         try {
             usuario = await this.usuarioRepository.findOne({
@@ -37,27 +36,37 @@ let AuthService = AuthService_1 = class AuthService {
             });
         }
         catch (err) {
-            this.logger.error(`Error al buscar usuario en la base de datos: ${err.message}`);
             throw new common_1.UnauthorizedException('Error de conexion a la base de datos');
         }
-        if (!usuario) {
-            this.logger.warn(`Usuario no encontrado: ${dto.username}`);
+        if (!usuario || !usuario.activo) {
             throw new common_1.UnauthorizedException('Credenciales invalidas');
         }
-        if (!usuario.activo) {
-            this.logger.warn(`Usuario inactivo: ${dto.username}`);
-            throw new common_1.UnauthorizedException('Usuario inactivo');
-        }
-        const passwordValid = (0, bcryptjs_1.compareSync)(dto.password, usuario.password_hash);
-        if (!passwordValid) {
-            this.logger.warn(`Password incorrecto para usuario: ${dto.username}`);
+        if (!(0, bcryptjs_1.compareSync)(dto.password, usuario.password_hash)) {
             throw new common_1.UnauthorizedException('Credenciales invalidas');
         }
-        this.logger.log(`Login exitoso para usuario: ${dto.username}`);
         const payload = { sub: usuario.id, username: usuario.username, nombre: usuario.nombre };
         return {
             access_token: this.jwtService.sign(payload),
             usuario: { id: usuario.id, username: usuario.username, nombre: usuario.nombre },
+        };
+    }
+    async register(dto) {
+        const existe = await this.usuarioRepository.findOne({
+            where: { username: dto.username },
+        });
+        if (existe) {
+            throw new common_1.BadRequestException('El usuario ya existe');
+        }
+        const usuario = this.usuarioRepository.create({
+            username: dto.username,
+            password_hash: (0, bcryptjs_1.hashSync)(dto.password, 10),
+            nombre: dto.nombre,
+        });
+        const saved = await this.usuarioRepository.save(usuario);
+        const payload = { sub: saved.id, username: saved.username, nombre: saved.nombre };
+        return {
+            access_token: this.jwtService.sign(payload),
+            usuario: { id: saved.id, username: saved.username, nombre: saved.nombre },
         };
     }
 };

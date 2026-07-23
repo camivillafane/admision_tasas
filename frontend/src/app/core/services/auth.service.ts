@@ -8,6 +8,12 @@ export interface LoginRequest {
   password: string;
 }
 
+export interface RegisterRequest {
+  nombre: string;
+  username: string;
+  password: string;
+}
+
 export interface LoginResponse {
   access_token: string;
   usuario: {
@@ -46,6 +52,17 @@ export class AuthService {
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, credentials).pipe(
+      tap((response) => {
+        localStorage.setItem(this.tokenKey, response.access_token);
+        localStorage.setItem(this.userKey, JSON.stringify(response.usuario));
+        this.isAuthenticated.set(true);
+        this.currentUser.set(response.usuario);
+      }),
+    );
+  }
+
+  register(data: RegisterRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/register`, data).pipe(
       tap((response) => {
         localStorage.setItem(this.tokenKey, response.access_token);
         localStorage.setItem(this.userKey, JSON.stringify(response.usuario));

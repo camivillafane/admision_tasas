@@ -1,10 +1,11 @@
-import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
+import { Injectable, UnauthorizedException, BadRequestException, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { compareSync } from 'bcryptjs';
+import { compareSync, hashSync } from 'bcryptjs';
 import { Usuario } from '../usuarios/entities/usuario.entity';
 import { LoginDto } from './dto/login.dto';
+import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
@@ -17,39 +18,51 @@ export class AuthService {
   ) {}
 
   async login(dto: LoginDto) {
-    this.logger.log(`Intento de login para usuario: ${dto.username}`);
-
     let usuario: Usuario | null;
     try {
       usuario = await this.usuarioRepository.findOne({
         where: { username: dto.username },
       });
     } catch (err) {
-      this.logger.error(`Error al buscar usuario en la base de datos: ${err.message}`);
       throw new UnauthorizedException('Error de conexion a la base de datos');
     }
 
-    if (!usuario) {
-      this.logger.warn(`Usuario no encontrado: ${dto.username}`);
+    if (!usuario || !usuario.activo) {
       throw new UnauthorizedException('Credenciales invalidas');
     }
 
-    if (!usuario.activo) {
-      this.logger.warn(`Usuario inactivo: ${dto.username}`);
-      throw new UnauthorizedException('Usuario inactivo');
-    }
-
-    const passwordValid = compareSync(dto.password, usuario.password_hash);
-    if (!passwordValid) {
-      this.logger.warn(`Password incorrecto para usuario: ${dto.username}`);
+    if (!compareSync(dto.password, usuario.password_hash)) {
       throw new UnauthorizedException('Credenciales invalidas');
     }
 
-    this.logger.log(`Login exitoso para usuario: ${dto.username}`);
     const payload = { sub: usuario.id, username: usuario.username, nombre: usuario.nombre };
     return {
       access_token: this.jwtService.sign(payload),
       usuario: { id: usuario.id, username: usuario.username, nombre: usuario.nombre },
+    };
+  }
+
+  async register(dto: RegisterDto) {
+    const existe = await this.usuarioRepository.findOne({
+      where: { username: dto.username },
+    });
+
+    if (existe) {
+      throw new BadRequestException('El usuario ya existe');
+    }
+
+    const usuario = this.usuarioRepository.create({
+      username: dto.username,
+      password_hash: hashSync(dto.password, 10),
+      nombre: dto.nombre,
+    });
+
+    const saved = await this.usuarioRepository.save(usuario);
+
+    const payload = { sub: saved.id, username: saved.username, nombre: saved.nombre };
+    return {
+      access_token: this.jwtService.sign(payload),
+      usuario: { id: saved.id, username: saved.username, nombre: saved.nombre },
     };
   }
 }

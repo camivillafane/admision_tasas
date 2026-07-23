@@ -5,12 +5,12 @@ import { NgIf } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-register',
   imports: [ReactiveFormsModule, NgIf, RouterLink],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss',
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.scss',
 })
-export class LoginComponent {
+export class RegisterComponent {
   form: FormGroup;
   loading = false;
   error: string | null = null;
@@ -21,21 +21,22 @@ export class LoginComponent {
     private readonly router: Router,
   ) {
     this.form = this.fb.group({
-      username: ['', Validators.required],
-      password: ['', Validators.required],
+      nombre: ['', Validators.required],
+      username: ['', [Validators.required, Validators.minLength(3)]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
-  login() {
+  register() {
     if (this.form.invalid) return;
     this.loading = true;
     this.error = null;
 
-    this.authService.login(this.form.value).subscribe({
+    this.authService.register(this.form.value).subscribe({
       next: () => this.router.navigate(['/dashboard']),
       error: (err) => {
         this.loading = false;
-        this.error = err.error?.message || 'Error al iniciar sesion';
+        this.error = err.error?.message || 'Error al registrarse';
       },
     });
   }
