@@ -50,25 +50,6 @@ let AuthService = AuthService_1 = class AuthService {
             usuario: { id: usuario.id, username: usuario.username, nombre: usuario.nombre },
         };
     }
-    async register(dto) {
-        const existe = await this.usuarioRepository.findOne({
-            where: { username: dto.username },
-        });
-        if (existe) {
-            throw new common_1.BadRequestException('El usuario ya existe');
-        }
-        const usuario = this.usuarioRepository.create({
-            username: dto.username,
-            password_hash: (0, bcryptjs_1.hashSync)(dto.password, 10),
-            nombre: dto.nombre,
-        });
-        const saved = await this.usuarioRepository.save(usuario);
-        const payload = { sub: saved.id, username: saved.username, nombre: saved.nombre };
-        return {
-            access_token: this.jwtService.sign(payload),
-            usuario: { id: saved.id, username: saved.username, nombre: saved.nombre },
-        };
-    }
 };
 exports.AuthService = AuthService;
 exports.AuthService = AuthService = AuthService_1 = __decorate([

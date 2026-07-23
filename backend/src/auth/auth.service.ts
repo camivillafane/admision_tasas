@@ -1,11 +1,10 @@
-import { Injectable, UnauthorizedException, BadRequestException, Logger } from '@nestjs/common';
+import { Injectable, UnauthorizedException, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { compareSync, hashSync } from 'bcryptjs';
+import { compareSync } from 'bcryptjs';
 import { Usuario } from '../usuarios/entities/usuario.entity';
 import { LoginDto } from './dto/login.dto';
-import { RegisterDto } from './dto/register.dto';
 
 @Injectable()
 export class AuthService {
@@ -39,30 +38,6 @@ export class AuthService {
     return {
       access_token: this.jwtService.sign(payload),
       usuario: { id: usuario.id, username: usuario.username, nombre: usuario.nombre },
-    };
-  }
-
-  async register(dto: RegisterDto) {
-    const existe = await this.usuarioRepository.findOne({
-      where: { username: dto.username },
-    });
-
-    if (existe) {
-      throw new BadRequestException('El usuario ya existe');
-    }
-
-    const usuario = this.usuarioRepository.create({
-      username: dto.username,
-      password_hash: hashSync(dto.password, 10),
-      nombre: dto.nombre,
-    });
-
-    const saved = await this.usuarioRepository.save(usuario);
-
-    const payload = { sub: saved.id, username: saved.username, nombre: saved.nombre };
-    return {
-      access_token: this.jwtService.sign(payload),
-      usuario: { id: saved.id, username: saved.username, nombre: saved.nombre },
     };
   }
 }
