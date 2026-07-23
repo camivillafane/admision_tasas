@@ -1,0 +1,33 @@
+<nav class="toolbar">
+  <img src="https://www.concordia.gob.ar/sites/default/files/logo-muni.png" alt="Municipalidad de Concordia" class="toolbar-logo" />
+  <span class="toolbar-divider"></span>
+  <span class="toolbar-module">Tasas Eventuales</span>
+  <span class="toolbar-spacer"></span>
+  <span class="toolbar-user">
+    {{ authService.currentUser()?.nombre }}
+  </span>
+  <button class="btn btn-logout" (click)="logout()">Cerrar sesion</button>
+</nav>
+
+<div class="shell">
+  <aside class="sidenav">
+    <nav class="sidenav-nav">
+      <a routerLink="/dashboard" routerLinkActive="active" class="sidenav-link">
+        <span>Dashboard</span>
+      </a>
+      <a routerLink="/contribuyentes" routerLinkActive="active" class="sidenav-link">
+        <span>Contribuyentes</span>
+      </a>
+      <a routerLink="/conceptos" routerLinkActive="active" class="sidenav-link">
+        <span>Conceptos</span>
+      </a>
+      <a routerLink="/liquidaciones" routerLinkActive="active" class="sidenav-link">
+        <span>Liquidaciones</span>
+      </a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <router-outlet />
+  </main>
+</div>

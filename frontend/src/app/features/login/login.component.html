@@ -1,0 +1,44 @@
+<div class="login-container">
+  <div class="login-logo">
+    <img src="https://www.concordia.gob.ar/sites/default/files/logo-muni.png" alt="Municipalidad de Concordia" />
+  </div>
+  <p class="login-system">Sistema de Tasas Eventuales</p>
+
+  <div class="login-card">
+    <h1 class="login-title">Iniciar sesion</h1>
+
+    <form [formGroup]="form" (ngSubmit)="login()">
+      <div class="form-group">
+        <label for="username">Usuario</label>
+        <div class="input-icon">
+          <i class="material-icons">person</i>
+          <input id="username" class="form-control" formControlName="username" placeholder="admin" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contrasena</label>
+        <div class="input-icon">
+          <i class="material-icons">lock</i>
+          <input
+            id="password"
+            class="form-control"
+            type="password"
+            formControlName="password"
+            placeholder="********"
+          />
+        </div>
+      </div>
+
+      <div *ngIf="error" class="login-error">{{ error }}</div>
+
+      <button type="submit" class="btn btn-primary w-full btn-login" [disabled]="loading || form.invalid">
+        Ingresar
+      </button>
+
+      <div *ngIf="loading" class="login-loading">
+        <div class="spinner"></div>
+      </div>
+    </form>
+  </div>
+</div>

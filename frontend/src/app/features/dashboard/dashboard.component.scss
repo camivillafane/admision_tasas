@@ -1,0 +1,67 @@
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  background: var(--white);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--green-dark);
+}
+
+.stat-pendientes { border-color: var(--orange); }
+.stat-vencidas { border-color: #f44336; }
+.stat-pagadas { border-color: var(--green-dark); }
+.stat-anuladas { border-color: #9e9e9e; }
+
+.stat-number {
+  font-family: var(--font-title);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.total-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--green-lighter);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-bottom: 24px;
+}
+
+.total-label {
+  font-size: 14px;
+  color: var(--text-muted);
+  display: block;
+}
+
+.total-amount {
+  font-family: var(--font-title);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--green-dark);
+}
+
+@media (max-width: 768px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .total-section {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+}

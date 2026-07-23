@@ -1,0 +1,49 @@
+<h1>Liquidaciones</h1>
+
+<div class="card">
+  <div class="card-header">
+    <div></div>
+    <a routerLink="/liquidaciones/nueva" class="btn btn-primary">Nueva</a>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>N</th>
+          <th>Contribuyente</th>
+          <th>CUIT</th>
+          <th>Evento</th>
+          <th>Emision</th>
+          <th>Vencimiento</th>
+          <th>Total</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let l of liquidaciones()">
+          <td>{{ l.id }}</td>
+          <td>{{ l.contribuyente?.apellido }}, {{ l.contribuyente?.nombre }}</td>
+          <td>{{ l.contribuyente?.cuit }}</td>
+          <td>{{ l.tipo_evento }}</td>
+          <td>{{ l.fecha_emision | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ l.fecha_vencimiento | date: 'dd/MM/yyyy' }}</td>
+          <td class="text-right fw-600">${{ l.total | number: '1.2-2' }}</td>
+          <td><span class="badge badge-{{ l.estado }}">{{ l.estado }}</span></td>
+          <td class="acciones">
+            <button class="btn-icon" (click)="downloadPdf(l.id)" title="Descargar PDF">
+              <i class="material-icons">picture_as_pdf</i>
+            </button>
+            <button class="btn-icon" *ngIf="l.estado === 'pendiente' || l.estado === 'vencida'" (click)="anular(l.id)" title="Anular">
+              <i class="material-icons">block</i>
+            </button>
+            <button class="btn-icon danger" *ngIf="l.estado !== 'pagada'" (click)="remove(l.id)" title="Eliminar">
+              <i class="material-icons">delete</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

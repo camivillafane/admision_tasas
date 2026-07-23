@@ -1,0 +1,26 @@
+<h1>Conceptos tributarios</h1>
+
+<div class="card">
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Codigo</th>
+          <th>Descripcion</th>
+          <th>Tipo</th>
+          <th>Porcentaje</th>
+          <th>Valor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of conceptos()">
+          <td><strong>{{ c.codigo }}</strong></td>
+          <td>{{ c.descripcion }}</td>
+          <td><span class="badge badge-{{ c.tipo }}">{{ c.tipo }}</span></td>
+          <td>{{ c.es_porcentaje ? 'Si' : 'No' }}</td>
+          <td>{{ c.es_porcentaje ? c.valor + '%' : '$' + c.valor }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

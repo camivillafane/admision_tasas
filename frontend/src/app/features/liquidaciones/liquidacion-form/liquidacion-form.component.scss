@@ -1,0 +1,43 @@
+.detalle-row {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  padding: 14px;
+  background: var(--green-lighter);
+  border-radius: var(--radius);
+  border-left: 3px solid var(--green);
+  margin-bottom: 12px;
+}
+
+.detalle-del {
+  margin-bottom: 4px;
+}
+
+.flex-2 { flex: 2 1 200px; }
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 20px 0;
+}
+
+.total-row {
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.total-label {
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.total-value {
+  font-family: var(--font-title);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--green-dark);
+}

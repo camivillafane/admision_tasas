@@ -1,0 +1,36 @@
+<div class="modal-overlay" (click)="closed.emit()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ contribuyente ? 'Editar' : 'Nuevo' }} contribuyente</h2>
+      <button class="btn-icon" (click)="closed.emit()"><i class="material-icons">close</i></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="form">
+        <div class="form-group">
+          <label>CUIT</label>
+          <input class="form-control" formControlName="cuit" placeholder="XX-XXXXXXXX-X" />
+        </div>
+        <div class="form-group">
+          <label>Apellido</label>
+          <input class="form-control" formControlName="apellido" />
+        </div>
+        <div class="form-group">
+          <label>Nombre</label>
+          <input class="form-control" formControlName="nombre" />
+        </div>
+        <div class="form-group">
+          <label>Domicilio</label>
+          <input class="form-control" formControlName="domicilio" />
+        </div>
+        <div class="checkbox-group">
+          <input type="checkbox" id="activo" formControlName="activo" />
+          <label for="activo">Activo</label>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" (click)="closed.emit()">Cancelar</button>
+      <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">Guardar</button>
+    </div>
+  </div>
+</div>

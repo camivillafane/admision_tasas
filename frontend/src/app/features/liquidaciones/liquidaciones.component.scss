@@ -1,0 +1,10 @@
+.acciones {
+  display: flex;
+  gap: 4px;
+}
+
+@media (max-width: 768px) {
+  .acciones {
+    flex-direction: column;
+  }
+}

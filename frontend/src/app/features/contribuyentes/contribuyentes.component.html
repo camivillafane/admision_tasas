@@ -1,0 +1,54 @@
+<h1>Contribuyentes</h1>
+
+<div class="card">
+  <div class="card-header">
+    <div class="flex gap-12 items-center">
+      <input class="form-control search-input" [(ngModel)]="search" (keyup.enter)="load()" placeholder="XX-XXXXXXXX-X" />
+      <button class="btn btn-outline" (click)="load()">Buscar</button>
+    </div>
+    <button class="btn btn-primary" (click)="openNew()">Nuevo</button>
+  </div>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>CUIT</th>
+          <th>Apellido</th>
+          <th>Nombre</th>
+          <th>Domicilio</th>
+          <th>Activo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of contribuyentes()">
+          <td>{{ c.cuit }}</td>
+          <td>{{ c.apellido }}</td>
+          <td>{{ c.nombre }}</td>
+          <td>{{ c.domicilio || '-' }}</td>
+          <td>
+            <span class="badge" [class.badge-pagada]="c.activo" [class.badge-anulada]="!c.activo">
+              {{ c.activo ? 'Si' : 'No' }}
+            </span>
+          </td>
+          <td>
+            <button class="btn-icon" (click)="openEdit(c)" title="Editar">
+              <i class="material-icons">edit</i>
+            </button>
+            <button class="btn-icon danger" (click)="remove(c.id)" title="Eliminar">
+              <i class="material-icons">delete</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<app-contribuyente-form
+  *ngIf="showModal"
+  [contribuyente]="selected"
+  (saved)="onSave()"
+  (closed)="showModal = false"
+/>
