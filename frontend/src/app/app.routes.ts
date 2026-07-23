@@ -36,14 +36,6 @@ export const routes: Routes = [
         path: 'liquidaciones/nueva',
         loadComponent: () => import('./features/liquidaciones/liquidacion-form/liquidacion-form.component').then((m) => m.LiquidacionFormComponent),
       },
-      {
-        path: 'liquidaciones/:id',
-        loadComponent: () => import('./features/liquidaciones/liquidacion-detail/liquidacion-detail.component').then((m) => m.LiquidacionDetailComponent),
-      },
-      {
-        path: 'pagos',
-        loadComponent: () => import('./features/pagos/pagos.component').then((m) => m.PagosComponent),
-      },
     ],
   },
   { path: '**', redirectTo: 'login' },

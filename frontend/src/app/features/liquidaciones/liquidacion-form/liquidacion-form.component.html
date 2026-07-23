@@ -1,101 +1,84 @@
-<h1>Nueva liquidación</h1>
+<h1>Nueva liquidacion</h1>
 
 <form [formGroup]="form" (ngSubmit)="save()">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Datos generales</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="row">
-        <mat-form-field appearance="outline" class="field-grow">
-          <mat-label>Contribuyente</mat-label>
-          <mat-select formControlName="contribuyente_id">
-            <mat-option *ngFor="let c of contribuyentes()" [value]="c.id">
-              {{ c.apellido }}, {{ c.nombre }} ({{ c.cuit }})
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="field-grow">
-          <mat-label>Tipo de evento</mat-label>
-          <input matInput formControlName="tipo_evento" placeholder="Ej: Habilitación comercial" />
-        </mat-form-field>
+  <div class="card">
+    <h3 class="card-title">Datos generales</h3>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Contribuyente</label>
+        <select class="form-control" formControlName="contribuyente_id">
+          <option value="">Seleccionar...</option>
+          <option *ngFor="let c of contribuyentes()" [value]="c.id">
+            {{ c.apellido }}, {{ c.nombre }} ({{ c.cuit }})
+          </option>
+        </select>
       </div>
-
-      <div class="row">
-        <mat-form-field appearance="outline" class="field">
-          <mat-label>Fecha del evento</mat-label>
-          <input matInput [matDatepicker]="pickerEvento" formControlName="fecha_evento" />
-          <mat-datepicker-toggle matSuffix [for]="pickerEvento"></mat-datepicker-toggle>
-          <mat-datepicker #pickerEvento></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="field">
-          <mat-label>Fecha de vencimiento</mat-label>
-          <input matInput [matDatepicker]="pickerVenc" formControlName="fecha_vencimiento" />
-          <mat-datepicker-toggle matSuffix [for]="pickerVenc"></mat-datepicker-toggle>
-          <mat-datepicker #pickerVenc></mat-datepicker>
-        </mat-form-field>
+      <div class="form-group">
+        <label>Tipo de evento</label>
+        <input class="form-control" formControlName="tipo_evento" placeholder="Ej: Habilitacion comercial" />
       </div>
-    </mat-card-content>
-  </mat-card>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Fecha del evento</label>
+        <input class="form-control" type="date" formControlName="fecha_evento" />
+      </div>
+      <div class="form-group">
+        <label>Fecha de vencimiento</label>
+        <input class="form-control" type="date" formControlName="fecha_vencimiento" />
+      </div>
+    </div>
+  </div>
 
-  <mat-card class="detalles-card">
-    <mat-card-header>
-      <mat-card-title>Detalles</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div formArrayName="detalles">
-        <div *ngFor="let detalle of detalles.controls; let i = index" [formGroupName]="i" class="detalle-row">
-          <mat-form-field appearance="outline" class="field-concepto">
-            <mat-label>Concepto</mat-label>
-            <mat-select formControlName="concepto_id">
-              <mat-option *ngFor="let c of conceptos()" [value]="c.id">
-                {{ c.codigo }} - {{ c.descripcion }}
-                <span *ngIf="c.es_porcentaje">({{ c.valor }}%)</span>
-                <span *ngIf="!c.es_porcentaje">(${{ c.valor }})</span>
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
+  <div class="card">
+    <h3 class="card-title">Detalles</h3>
 
-          <mat-form-field appearance="outline" class="field-cantidad">
-            <mat-label>Cantidad</mat-label>
-            <input matInput type="number" formControlName="cantidad" />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="field-base" *ngIf="getConcepto(detalle.get('concepto_id')?.value)?.es_porcentaje">
-            <mat-label>Base imponible</mat-label>
-            <input matInput type="number" formControlName="base_imponible" />
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="field-monto">
-            <mat-label>Monto manual</mat-label>
-            <input matInput type="number" formControlName="monto" placeholder="Opcional" />
-          </mat-form-field>
-
-          <button mat-icon-button color="warn" type="button" (click)="removeDetalle(i)">
-            <mat-icon>delete</mat-icon>
-          </button>
+    <div formArrayName="detalles">
+      <div *ngFor="let detalle of detalles.controls; let i = index" [formGroupName]="i" class="detalle-row">
+        <div class="form-group flex-2">
+          <label>Concepto</label>
+          <select class="form-control" formControlName="concepto_id">
+            <option value="">Seleccionar...</option>
+            <option *ngFor="let c of conceptos()" [value]="c.id">
+              {{ c.codigo }} - {{ c.descripcion }}
+              {{ c.es_porcentaje ? '(' + c.valor + '%)' : '($' + c.valor + ')' }}
+            </option>
+          </select>
         </div>
+        <div class="form-group" style="flex:0 1 100px">
+          <label>Cantidad</label>
+          <input class="form-control" type="number" formControlName="cantidad" />
+        </div>
+        <div class="form-group" *ngIf="getConcepto(detalle.get('concepto_id')?.value)?.es_porcentaje" style="flex:0 1 130px">
+          <label>Base imponible</label>
+          <input class="form-control" type="number" formControlName="base_imponible" />
+        </div>
+        <div class="form-group" style="flex:0 1 130px">
+          <label>Monto manual</label>
+          <input class="form-control" type="number" formControlName="monto" placeholder="Opcional" />
+        </div>
+        <button type="button" class="btn-icon danger detalle-del" (click)="removeDetalle(i)">
+          <i class="material-icons">delete</i>
+        </button>
       </div>
+    </div>
 
-      <button mat-stroked-button type="button" (click)="addDetalle()">
-        <mat-icon>add</mat-icon>
-        Agregar concepto
-      </button>
+    <button type="button" class="btn btn-outline mt-8" (click)="addDetalle()">
+      Agregar concepto
+    </button>
 
-      <mat-divider class="divider"></mat-divider>
+    <hr class="divider" />
 
-      <div class="total-row">
-        <span class="total-label">Total estimado:</span>
-        <span class="total-value">${{ total() | number: '1.2-2' }}</span>
-      </div>
-    </mat-card-content>
-    <mat-card-actions align="end">
-      <button mat-button type="button" routerLink="/liquidaciones">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
-        Guardar liquidación
-      </button>
-    </mat-card-actions>
-  </mat-card>
+    <div class="total-row">
+      <span class="total-label">Total estimado:</span>
+      <span class="total-value">${{ total() | number: '1.2-2' }}</span>
+    </div>
+  </div>
+
+  <div class="flex justify-end gap-12 mt-16">
+    <a routerLink="/liquidaciones" class="btn btn-ghost">Cancelar</a>
+    <button type="submit" class="btn btn-primary" [disabled]="form.invalid || loading">
+      Guardar liquidacion
+    </button>
+  </div>
 </form>

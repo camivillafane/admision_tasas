@@ -1,14 +1,11 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
 import { NgFor, DecimalPipe } from '@angular/common';
 import { LiquidacionesService, Liquidacion } from '../../core/services/liquidaciones.service';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [MatCardModule, MatIconModule, MatButtonModule, RouterLink, NgFor, DecimalPipe],
+  imports: [RouterLink, NgFor, DecimalPipe],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })

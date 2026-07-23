@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
+var AuthService_1;
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
@@ -19,20 +20,40 @@ const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const bcryptjs_1 = require("bcryptjs");
 const usuario_entity_1 = require("../usuarios/entities/usuario.entity");
-let AuthService = class AuthService {
+let AuthService = AuthService_1 = class AuthService {
     usuarioRepository;
     jwtService;
+    logger = new common_1.Logger(AuthService_1.name);
     constructor(usuarioRepository, jwtService) {
         this.usuarioRepository = usuarioRepository;
         this.jwtService = jwtService;
     }
     async login(dto) {
-        const usuario = await this.usuarioRepository.findOne({
-            where: { username: dto.username, activo: true },
-        });
-        if (!usuario || !(0, bcryptjs_1.compareSync)(dto.password, usuario.password_hash)) {
-            throw new common_1.UnauthorizedException('Credenciales inválidas');
+        this.logger.log(`Intento de login para usuario: ${dto.username}`);
+        let usuario;
+        try {
+            usuario = await this.usuarioRepository.findOne({
+                where: { username: dto.username },
+            });
         }
+        catch (err) {
+            this.logger.error(`Error al buscar usuario en la base de datos: ${err.message}`);
+            throw new common_1.UnauthorizedException('Error de conexion a la base de datos');
+        }
+        if (!usuario) {
+            this.logger.warn(`Usuario no encontrado: ${dto.username}`);
+            throw new common_1.UnauthorizedException('Credenciales invalidas');
+        }
+        if (!usuario.activo) {
+            this.logger.warn(`Usuario inactivo: ${dto.username}`);
+            throw new common_1.UnauthorizedException('Usuario inactivo');
+        }
+        const passwordValid = (0, bcryptjs_1.compareSync)(dto.password, usuario.password_hash);
+        if (!passwordValid) {
+            this.logger.warn(`Password incorrecto para usuario: ${dto.username}`);
+            throw new common_1.UnauthorizedException('Credenciales invalidas');
+        }
+        this.logger.log(`Login exitoso para usuario: ${dto.username}`);
         const payload = { sub: usuario.id, username: usuario.username, nombre: usuario.nombre };
         return {
             access_token: this.jwtService.sign(payload),
@@ -41,7 +62,7 @@ let AuthService = class AuthService {
     }
 };
 exports.AuthService = AuthService;
-exports.AuthService = AuthService = __decorate([
+exports.AuthService = AuthService = AuthService_1 = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(usuario_entity_1.Usuario)),
     __metadata("design:paramtypes", [typeorm_2.Repository,

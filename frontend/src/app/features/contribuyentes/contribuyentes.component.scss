@@ -1,15 +1,22 @@
-.actions {
+.search-input {
+  width: 280px;
+}
+
+.card-header {
   display: flex;
-  gap: 16px;
+  justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
 }
 
-.search {
-  flex: 1;
-  max-width: 400px;
-}
+@media (max-width: 768px) {
+  .card-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
 
-table {
-  width: 100%;
+  .search-input {
+    width: 100%;
+  }
 }

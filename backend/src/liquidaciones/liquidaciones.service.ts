@@ -93,7 +93,19 @@ export class LiquidacionesService {
     return this.liquidacionRepository.save(liquidacion);
   }
 
-  findAll() {
+  private async marcarVencidasAutomatico() {
+    const hoy = new Date().toISOString().split('T')[0];
+    await this.liquidacionRepository
+      .createQueryBuilder()
+      .update(Liquidacion)
+      .set({ estado: 'vencida' })
+      .where("estado = 'pendiente'")
+      .andWhere("fecha_vencimiento < :hoy", { hoy })
+      .execute();
+  }
+
+  async findAll() {
+    await this.marcarVencidasAutomatico();
     return this.liquidacionRepository.find({
       relations: ['contribuyente', 'detalles', 'detalles.concepto'],
       order: { id: 'DESC' },
@@ -101,9 +113,10 @@ export class LiquidacionesService {
   }
 
   async findOne(id: number) {
+    await this.marcarVencidasAutomatico();
     const liquidacion = await this.liquidacionRepository.findOne({
       where: { id },
-      relations: ['contribuyente', 'detalles', 'detalles.concepto', 'pagos'],
+      relations: ['contribuyente', 'detalles', 'detalles.concepto'],
     });
     if (!liquidacion) throw new NotFoundException('Liquidación no encontrada');
     return liquidacion;
@@ -162,17 +175,5 @@ export class LiquidacionesService {
       throw new BadRequestException('No se puede eliminar una liquidación pagada');
     }
     return this.liquidacionRepository.remove(liquidacion);
-  }
-
-  async marcarVencidas() {
-    const hoy = new Date().toISOString().split('T')[0];
-    const result = await this.liquidacionRepository
-      .createQueryBuilder()
-      .update(Liquidacion)
-      .set({ estado: 'vencida' })
-      .where("estado = 'pendiente'")
-      .andWhere("fecha_vencimiento < :hoy", { hoy })
-      .execute();
-    return { afectadas: result.affected || 0 };
   }
 }

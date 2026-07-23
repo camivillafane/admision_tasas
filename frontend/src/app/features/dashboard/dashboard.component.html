@@ -1,61 +1,44 @@
 <h1>Dashboard</h1>
 
-<div class="cards">
-  <mat-card class="card card-pendientes">
-    <mat-card-header>
-      <mat-icon mat-card-avatar>pending</mat-icon>
-      <mat-card-title>Pendientes</mat-card-title>
-      <mat-card-subtitle>{{ pendientes() }} liquidaciones</mat-card-subtitle>
-    </mat-card-header>
-  </mat-card>
+<div class="stats-grid">
+  <div class="stat-card stat-pendientes">
+    <span class="stat-number">{{ pendientes() }}</span>
+    <span class="stat-label">Pendientes</span>
+  </div>
 
-  <mat-card class="card card-vencidas">
-    <mat-card-header>
-      <mat-icon mat-card-avatar>warning</mat-icon>
-      <mat-card-title>Vencidas</mat-card-title>
-      <mat-card-subtitle>{{ vencidas() }} liquidaciones</mat-card-subtitle>
-    </mat-card-header>
-  </mat-card>
+  <div class="stat-card stat-vencidas">
+    <span class="stat-number">{{ vencidas() }}</span>
+    <span class="stat-label">Vencidas</span>
+  </div>
 
-  <mat-card class="card card-pagadas">
-    <mat-card-header>
-      <mat-icon mat-card-avatar>check_circle</mat-icon>
-      <mat-card-title>Pagadas</mat-card-title>
-      <mat-card-subtitle>{{ pagadas() }} liquidaciones</mat-card-subtitle>
-    </mat-card-header>
-  </mat-card>
+  <div class="stat-card stat-pagadas">
+    <span class="stat-number">{{ pagadas() }}</span>
+    <span class="stat-label">Pagadas</span>
+  </div>
 
-  <mat-card class="card card-anuladas">
-    <mat-card-header>
-      <mat-icon mat-card-avatar>cancel</mat-icon>
-      <mat-card-title>Anuladas</mat-card-title>
-      <mat-card-subtitle>{{ anuladas() }} liquidaciones</mat-card-subtitle>
-    </mat-card-header>
-  </mat-card>
+  <div class="stat-card stat-anuladas">
+    <span class="stat-number">{{ anuladas() }}</span>
+    <span class="stat-label">Anuladas</span>
+  </div>
 </div>
 
-<mat-card class="total-card">
-  <mat-card-header>
-    <mat-card-title>Total pendiente de cobro</mat-card-title>
-    <mat-card-subtitle>${{ totalPendiente() | number: '1.2-2' }}</mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-actions>
-    <button mat-raised-button color="primary" routerLink="/liquidaciones/nueva">
-      <mat-icon>add</mat-icon>
-      Nueva liquidación
-    </button>
-  </mat-card-actions>
-</mat-card>
+<div class="total-section">
+  <div class="total-info">
+    <span class="total-label">Total pendiente de cobro</span>
+    <span class="total-amount">${{ totalPendiente() | number: '1.2-2' }}</span>
+  </div>
+  <a routerLink="/liquidaciones/nueva" class="btn btn-primary">
+    Nueva liquidacion
+  </a>
+</div>
 
-<mat-card class="recent-card">
-  <mat-card-header>
-    <mat-card-title>Últimas liquidaciones</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <table mat-table class="simple-table">
+<div class="card">
+  <h3 class="card-title">Ultimas liquidaciones</h3>
+  <div class="table-container">
+    <table>
       <thead>
         <tr>
-          <th>N°</th>
+          <th>N</th>
           <th>Contribuyente</th>
           <th>Evento</th>
           <th>Total</th>
@@ -67,12 +50,10 @@
           <td>{{ l.numero || l.id }}</td>
           <td>{{ l.contribuyente?.apellido }}, {{ l.contribuyente?.nombre }}</td>
           <td>{{ l.tipo_evento }}</td>
-          <td>${{ l.total | number: '1.2-2' }}</td>
-          <td>
-            <span class="badge" [class]="'estado-' + l.estado">{{ l.estado }}</span>
-          </td>
+          <td class="text-right">${{ l.total | number: '1.2-2' }}</td>
+          <td><span class="badge badge-{{ l.estado }}">{{ l.estado }}</span></td>
         </tr>
       </tbody>
     </table>
-  </mat-card-content>
-</mat-card>
+  </div>
+</div>

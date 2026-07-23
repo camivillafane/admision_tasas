@@ -13,11 +13,9 @@ export declare class LiquidacionesService {
     private generarNumero;
     private calcularDetalles;
     create(dto: CreateLiquidacionDto): Promise<Liquidacion>;
+    private marcarVencidasAutomatico;
     findAll(): Promise<Liquidacion[]>;
     findOne(id: number): Promise<Liquidacion>;
     update(id: number, dto: UpdateLiquidacionDto): Promise<Liquidacion>;
     remove(id: number): Promise<Liquidacion>;
-    marcarVencidas(): Promise<{
-        afectadas: number;
-    }>;
 }

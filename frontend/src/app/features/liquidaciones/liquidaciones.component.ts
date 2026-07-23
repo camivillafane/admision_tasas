@@ -1,58 +1,39 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
-import { MatChipsModule } from '@angular/material/chips';
-import { NgIf, DatePipe, DecimalPipe } from '@angular/common';
+import { NgFor, NgIf, DatePipe, DecimalPipe } from '@angular/common';
 import { LiquidacionesService, Liquidacion } from '../../core/services/liquidaciones.service';
 
 @Component({
   selector: 'app-liquidaciones',
-  imports: [RouterLink, MatCardModule, MatButtonModule, MatIconModule, MatTableModule, MatChipsModule, NgIf, DatePipe, DecimalPipe],
+  imports: [RouterLink, NgFor, NgIf, DatePipe, DecimalPipe],
   templateUrl: './liquidaciones.component.html',
   styleUrl: './liquidaciones.component.scss',
 })
 export class LiquidacionesComponent implements OnInit {
   liquidaciones = signal<Liquidacion[]>([]);
-  displayedColumns = ['numero', 'contribuyente', 'evento', 'vencimiento', 'total', 'estado', 'acciones'];
 
-  constructor(private readonly liquidacionesService: LiquidacionesService) {}
+  constructor(private readonly service: LiquidacionesService) {}
 
-  ngOnInit() {
-    this.load();
-  }
+  ngOnInit() { this.load(); }
 
   load() {
-    this.liquidacionesService.findAll().subscribe((data) => this.liquidaciones.set(data));
+    this.service.findAll().subscribe((d) => this.liquidaciones.set(d));
   }
 
   downloadPdf(id: number) {
-    this.liquidacionesService.downloadPdf(id);
+    this.service.downloadPdf(id);
   }
 
   anular(id: number) {
-    if (!confirm('¿Está seguro de anular la liquidación?')) return;
-    this.liquidacionesService.update(id, { estado: 'anulada' }).subscribe(() => this.load());
-  }
-
-  marcarVencidas() {
-    this.liquidacionesService.marcarVencidas().subscribe((result) => {
-      alert(`${result.afectadas} liquidaciones marcadas como vencidas`);
-      this.load();
-    });
+    if (!confirm('Anular liquidacion?')) return;
+    this.service.update(id, { estado: 'anulada' }).subscribe(() => this.load());
   }
 
   remove(id: number) {
-    if (!confirm('¿Está seguro de eliminar la liquidación?')) return;
-    this.liquidacionesService.remove(id).subscribe({
+    if (!confirm('Eliminar liquidacion?')) return;
+    this.service.remove(id).subscribe({
       next: () => this.load(),
       error: (err) => alert(err.error?.message || 'Error al eliminar'),
     });
-  }
-
-  getEstadoClass(estado: string): string {
-    return 'estado-' + estado;
   }
 }

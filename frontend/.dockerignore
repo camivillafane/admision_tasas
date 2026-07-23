@@ -7,4 +7,3 @@ npm-debug.log
 coverage
 Dockerfile
 .dockerignore
-nginx.conf

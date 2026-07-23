@@ -12,8 +12,5 @@ export declare class LiquidacionesController {
     findOne(id: string): Promise<import("./entities/liquidacion.entity").Liquidacion>;
     update(id: string, dto: UpdateLiquidacionDto): Promise<import("./entities/liquidacion.entity").Liquidacion>;
     remove(id: string): Promise<import("./entities/liquidacion.entity").Liquidacion>;
-    marcarVencidas(): Promise<{
-        afectadas: number;
-    }>;
     pdf(id: string, res: Response): Promise<void>;
 }

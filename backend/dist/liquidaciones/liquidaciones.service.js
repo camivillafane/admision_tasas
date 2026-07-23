@@ -91,16 +91,28 @@ let LiquidacionesService = class LiquidacionesService {
         });
         return this.liquidacionRepository.save(liquidacion);
     }
-    findAll() {
+    async marcarVencidasAutomatico() {
+        const hoy = new Date().toISOString().split('T')[0];
+        await this.liquidacionRepository
+            .createQueryBuilder()
+            .update(liquidacion_entity_1.Liquidacion)
+            .set({ estado: 'vencida' })
+            .where("estado = 'pendiente'")
+            .andWhere("fecha_vencimiento < :hoy", { hoy })
+            .execute();
+    }
+    async findAll() {
+        await this.marcarVencidasAutomatico();
         return this.liquidacionRepository.find({
             relations: ['contribuyente', 'detalles', 'detalles.concepto'],
             order: { id: 'DESC' },
         });
     }
     async findOne(id) {
+        await this.marcarVencidasAutomatico();
         const liquidacion = await this.liquidacionRepository.findOne({
             where: { id },
-            relations: ['contribuyente', 'detalles', 'detalles.concepto', 'pagos'],
+            relations: ['contribuyente', 'detalles', 'detalles.concepto'],
         });
         if (!liquidacion)
             throw new common_1.NotFoundException('Liquidación no encontrada');
@@ -150,17 +162,6 @@ let LiquidacionesService = class LiquidacionesService {
             throw new common_1.BadRequestException('No se puede eliminar una liquidación pagada');
         }
         return this.liquidacionRepository.remove(liquidacion);
-    }
-    async marcarVencidas() {
-        const hoy = new Date().toISOString().split('T')[0];
-        const result = await this.liquidacionRepository
-            .createQueryBuilder()
-            .update(liquidacion_entity_1.Liquidacion)
-            .set({ estado: 'vencida' })
-            .where("estado = 'pendiente'")
-            .andWhere("fecha_vencimiento < :hoy", { hoy })
-            .execute();
-        return { afectadas: result.affected || 0 };
     }
 };
 exports.LiquidacionesService = LiquidacionesService;

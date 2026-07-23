@@ -39,11 +39,6 @@ export class LiquidacionesController {
     return this.liquidacionesService.remove(+id);
   }
 
-  @Post('vencidas')
-  marcarVencidas() {
-    return this.liquidacionesService.marcarVencidas();
-  }
-
   @Get(':id/pdf')
   async pdf(@Param('id') id: string, @Res() res: Response) {
     const liquidacion = await this.liquidacionesService.findOne(+id);

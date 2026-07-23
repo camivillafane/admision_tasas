@@ -1,63 +1,26 @@
-<h1>Conceptos</h1>
+<h1>Conceptos tributarios</h1>
 
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Listado de conceptos tributarios</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div class="actions">
-      <span class="spacer"></span>
-      <button mat-raised-button color="primary" (click)="openDialog()">
-        <mat-icon>add</mat-icon>
-        Nuevo
-      </button>
-    </div>
-
-    <table mat-table [dataSource]="conceptos()" class="mat-elevation-z1">
-      <ng-container matColumnDef="codigo">
-        <th mat-header-cell *matHeaderCellDef>Código</th>
-        <td mat-cell *matCellDef="let c">{{ c.codigo }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="descripcion">
-        <th mat-header-cell *matHeaderCellDef>Descripción</th>
-        <td mat-cell *matCellDef="let c">{{ c.descripcion }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="tipo">
-        <th mat-header-cell *matHeaderCellDef>Tipo</th>
-        <td mat-cell *matCellDef="let c">{{ c.tipo }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="es_porcentaje">
-        <th mat-header-cell *matHeaderCellDef>%</th>
-        <td mat-cell *matCellDef="let c">{{ c.es_porcentaje ? 'Sí' : 'No' }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="valor">
-        <th mat-header-cell *matHeaderCellDef>Valor</th>
-        <td mat-cell *matCellDef="let c">{{ c.es_porcentaje ? c.valor + '%' : '$' + c.valor }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="activo">
-        <th mat-header-cell *matHeaderCellDef>Activo</th>
-        <td mat-cell *matCellDef="let c">{{ c.activo ? 'Sí' : 'No' }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="acciones">
-        <th mat-header-cell *matHeaderCellDef>Acciones</th>
-        <td mat-cell *matCellDef="let c">
-          <button mat-icon-button (click)="openDialog(c)" title="Editar">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="remove(c.id)" title="Eliminar">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+<div class="card">
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Codigo</th>
+          <th>Descripcion</th>
+          <th>Tipo</th>
+          <th>Porcentaje</th>
+          <th>Valor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of conceptos()">
+          <td><strong>{{ c.codigo }}</strong></td>
+          <td>{{ c.descripcion }}</td>
+          <td><span class="badge badge-{{ c.tipo }}">{{ c.tipo }}</span></td>
+          <td>{{ c.es_porcentaje ? 'Si' : 'No' }}</td>
+          <td>{{ c.es_porcentaje ? c.valor + '%' : '$' + c.valor }}</td>
+        </tr>
+      </tbody>
     </table>
-  </mat-card-content>
-</mat-card>
+  </div>
+</div>

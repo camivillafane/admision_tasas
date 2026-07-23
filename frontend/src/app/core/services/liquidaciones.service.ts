@@ -25,16 +25,6 @@ export interface Liquidacion {
   total: number;
   estado: 'pendiente' | 'pagada' | 'vencida' | 'anulada';
   detalles: LiquidacionDetalle[];
-  pagos?: Pago[];
-}
-
-export interface Pago {
-  id: number;
-  liquidacion_id: number;
-  fecha_pago: string;
-  monto: number;
-  medio_pago?: string;
-  observaciones?: string;
 }
 
 export interface CreateLiquidacionRequest {
@@ -81,35 +71,19 @@ export class LiquidacionesService {
 
   downloadPdf(id: number): void {
     const url = `${this.apiUrl}/${id}/pdf`;
-    window.open(url, '_blank');
-  }
-
-  marcarVencidas(): Observable<{ afectadas: number }> {
-    return this.http.post<{ afectadas: number }>(`${this.apiUrl}/vencidas`, {});
-  }
-}
-
-@Injectable({ providedIn: 'root' })
-export class PagosService {
-  private readonly apiUrl = 'http://localhost:3000/api/pagos';
-
-  constructor(private readonly http: HttpClient) {}
-
-  findAll(): Observable<Pago[]> {
-    return this.http.get<Pago[]>(this.apiUrl);
-  }
-
-  create(data: {
-    liquidacion_id: number;
-    monto: number;
-    fecha_pago?: string;
-    medio_pago?: string;
-    observaciones?: string;
-  }): Observable<Pago> {
-    return this.http.post<Pago>(this.apiUrl, data);
-  }
-
-  remove(id: number): Observable<{ eliminado: boolean }> {
-    return this.http.delete<{ eliminado: boolean }>(`${this.apiUrl}/${id}`);
+    this.http.get(url, { responseType: 'blob' }).subscribe({
+      next: (blob) => {
+        const blobUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = blobUrl;
+        a.download = `liquidacion-${id}.pdf`;
+        a.click();
+        window.URL.revokeObjectURL(blobUrl);
+      },
+      error: (err) => {
+        alert('Error al descargar el PDF');
+        console.error(err);
+      },
+    });
   }
 }

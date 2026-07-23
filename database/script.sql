@@ -1,13 +1,12 @@
-IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'admision')
+IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = 'TasasEventualesDB')
 BEGIN
-    CREATE DATABASE admision;
+    CREATE DATABASE TasasEventualesDB;
 END
 GO
 
-USE admision;
+USE TasasEventualesDB;
 GO
 
--- Limpieza previa para poder reejecutar el script en desarrollo
 DROP TABLE IF EXISTS pagos;
 DROP TABLE IF EXISTS liquidaciones_detalles;
 DROP TABLE IF EXISTS liquidaciones;
@@ -143,5 +142,5 @@ GO
 
 -- Usuario admin de prueba: admin / Admin1234!
 INSERT INTO usuarios (username, password_hash, nombre)
-VALUES ('admin', '$2b$10$MBWHdXoODNKBQwMp8S71sO.aghAnbE9fZQTgJw9hf8XPwzc.Ga6KC', 'Administrador');
+VALUES ('admin', '$2b$10$L8zZw1tmkqiLoAyc9gpbvOqkfV5agvyJUNLt13ZRuAHGnmZyDIBD2', 'Administrador');
 GO

@@ -1,38 +1,37 @@
-<mat-toolbar color="primary">
-  <span class="spacer">Municipalidad de Concordia - Tasas Eventuales</span>
-  <span class="user">{{ authService.currentUser()?.nombre }}</span>
-  <button mat-icon-button (click)="logout()" title="Cerrar sesión">
-    <mat-icon>logout</mat-icon>
-  </button>
-</mat-toolbar>
+<nav class="toolbar">
+  <img src="https://www.concordia.gob.ar/sites/default/files/logo-muni.png" alt="Municipalidad de Concordia" class="toolbar-logo" />
+  <span class="toolbar-divider"></span>
+  <span class="toolbar-module">Tasas Eventuales</span>
+  <span class="toolbar-spacer"></span>
+  <span class="toolbar-user">
+    {{ authService.currentUser()?.nombre }}
+  </span>
+  <button class="btn btn-logout" (click)="logout()">Cerrar sesion</button>
+</nav>
 
-<mat-sidenav-container class="sidenav-container">
-  <mat-sidenav mode="side" opened class="sidenav">
-    <mat-nav-list>
-      <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
-        <mat-icon matListItemIcon>dashboard</mat-icon>
+<div class="shell">
+  <aside class="sidenav">
+    <nav class="sidenav-nav">
+      <a routerLink="/dashboard" routerLinkActive="active" class="sidenav-link">
+        <i class="material-icons">dashboard</i>
         <span>Dashboard</span>
       </a>
-      <a mat-list-item routerLink="/contribuyentes" routerLinkActive="active">
-        <mat-icon matListItemIcon>people</mat-icon>
+      <a routerLink="/contribuyentes" routerLinkActive="active" class="sidenav-link">
+        <i class="material-icons">people</i>
         <span>Contribuyentes</span>
       </a>
-      <a mat-list-item routerLink="/conceptos" routerLinkActive="active">
-        <mat-icon matListItemIcon>label</mat-icon>
+      <a routerLink="/conceptos" routerLinkActive="active" class="sidenav-link">
+        <i class="material-icons">label</i>
         <span>Conceptos</span>
       </a>
-      <a mat-list-item routerLink="/liquidaciones" routerLinkActive="active">
-        <mat-icon matListItemIcon>receipt</mat-icon>
+      <a routerLink="/liquidaciones" routerLinkActive="active" class="sidenav-link">
+        <i class="material-icons">receipt</i>
         <span>Liquidaciones</span>
       </a>
-      <a mat-list-item routerLink="/pagos" routerLinkActive="active">
-        <mat-icon matListItemIcon>payment</mat-icon>
-        <span>Pagos</span>
-      </a>
-    </mat-nav-list>
-  </mat-sidenav>
+    </nav>
+  </aside>
 
-  <mat-sidenav-content class="content">
+  <main class="main-content">
     <router-outlet />
-  </mat-sidenav-content>
-</mat-sidenav-container>
+  </main>
+</div>

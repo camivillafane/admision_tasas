@@ -1,61 +1,54 @@
 <h1>Contribuyentes</h1>
 
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Listado de contribuyentes</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div class="actions">
-      <mat-form-field appearance="outline" class="search">
-        <mat-label>Buscar por CUIT</mat-label>
-        <input matInput [(ngModel)]="search" (keyup.enter)="load()" />
-      </mat-form-field>
-      <button mat-raised-button color="primary" (click)="openDialog()">
-        <mat-icon>add</mat-icon>
-        Nuevo
-      </button>
+<div class="card">
+  <div class="card-header">
+    <div class="flex gap-12 items-center">
+      <input class="form-control search-input" [(ngModel)]="search" (keyup.enter)="load()" placeholder="XX-XXXXXXXX-X" />
+      <button class="btn btn-outline" (click)="load()">Buscar</button>
     </div>
+    <button class="btn btn-primary" (click)="openNew()">Nuevo</button>
+  </div>
 
-    <table mat-table [dataSource]="contribuyentes()" class="mat-elevation-z1">
-      <ng-container matColumnDef="cuit">
-        <th mat-header-cell *matHeaderCellDef>CUIT</th>
-        <td mat-cell *matCellDef="let c">{{ c.cuit }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="apellido">
-        <th mat-header-cell *matHeaderCellDef>Apellido</th>
-        <td mat-cell *matCellDef="let c">{{ c.apellido }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="nombre">
-        <th mat-header-cell *matHeaderCellDef>Nombre</th>
-        <td mat-cell *matCellDef="let c">{{ c.nombre }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="domicilio">
-        <th mat-header-cell *matHeaderCellDef>Domicilio</th>
-        <td mat-cell *matCellDef="let c">{{ c.domicilio || '-' }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="activo">
-        <th mat-header-cell *matHeaderCellDef>Activo</th>
-        <td mat-cell *matCellDef="let c">{{ c.activo ? 'Sí' : 'No' }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="acciones">
-        <th mat-header-cell *matHeaderCellDef>Acciones</th>
-        <td mat-cell *matCellDef="let c">
-          <button mat-icon-button (click)="openDialog(c)" title="Editar">
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" (click)="remove(c.id)" title="Eliminar">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>CUIT</th>
+          <th>Apellido</th>
+          <th>Nombre</th>
+          <th>Domicilio</th>
+          <th>Activo</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let c of contribuyentes()">
+          <td>{{ c.cuit }}</td>
+          <td>{{ c.apellido }}</td>
+          <td>{{ c.nombre }}</td>
+          <td>{{ c.domicilio || '-' }}</td>
+          <td>
+            <span class="badge" [class.badge-pagada]="c.activo" [class.badge-anulada]="!c.activo">
+              {{ c.activo ? 'Si' : 'No' }}
+            </span>
+          </td>
+          <td>
+            <button class="btn-icon" (click)="openEdit(c)" title="Editar">
+              <i class="material-icons">edit</i>
+            </button>
+            <button class="btn-icon danger" (click)="remove(c.id)" title="Eliminar">
+              <i class="material-icons">delete</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
     </table>
-  </mat-card-content>
-</mat-card>
+  </div>
+</div>
+
+<app-contribuyente-form
+  *ngIf="showModal"
+  [contribuyente]="selected"
+  (saved)="onSave()"
+  (closed)="showModal = false"
+/>

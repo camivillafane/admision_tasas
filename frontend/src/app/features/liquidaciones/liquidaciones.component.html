@@ -1,76 +1,49 @@
 <h1>Liquidaciones</h1>
 
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>Listado de liquidaciones</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div class="actions">
-      <button mat-raised-button color="primary" routerLink="/liquidaciones/nueva">
-        <mat-icon>add</mat-icon>
-        Nueva
-      </button>
-      <button mat-stroked-button (click)="marcarVencidas()">
-        <mat-icon>update</mat-icon>
-        Marcar vencidas
-      </button>
-    </div>
+<div class="card">
+  <div class="card-header">
+    <div></div>
+    <a routerLink="/liquidaciones/nueva" class="btn btn-primary">Nueva</a>
+  </div>
 
-    <table mat-table [dataSource]="liquidaciones()" class="mat-elevation-z1">
-      <ng-container matColumnDef="numero">
-        <th mat-header-cell *matHeaderCellDef>N°</th>
-        <td mat-cell *matCellDef="let l">{{ l.numero || l.id }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="contribuyente">
-        <th mat-header-cell *matHeaderCellDef>Contribuyente</th>
-        <td mat-cell *matCellDef="let l">{{ l.contribuyente?.apellido }}, {{ l.contribuyente?.nombre }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="evento">
-        <th mat-header-cell *matHeaderCellDef>Evento</th>
-        <td mat-cell *matCellDef="let l">{{ l.tipo_evento }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="vencimiento">
-        <th mat-header-cell *matHeaderCellDef>Vencimiento</th>
-        <td mat-cell *matCellDef="let l">{{ l.fecha_vencimiento | date: 'dd/MM/yyyy' }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="total">
-        <th mat-header-cell *matHeaderCellDef>Total</th>
-        <td mat-cell *matCellDef="let l">${{ l.total | number: '1.2-2' }}</td>
-      </ng-container>
-
-      <ng-container matColumnDef="estado">
-        <th mat-header-cell *matHeaderCellDef>Estado</th>
-        <td mat-cell *matCellDef="let l">
-          <mat-chip-set>
-            <mat-chip [class]="getEstadoClass(l.estado)">{{ l.estado }}</mat-chip>
-          </mat-chip-set>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="acciones">
-        <th mat-header-cell *matHeaderCellDef>Acciones</th>
-        <td mat-cell *matCellDef="let l">
-          <button mat-icon-button [routerLink]="['/liquidaciones', l.id]" title="Ver">
-            <mat-icon>visibility</mat-icon>
-          </button>
-          <button mat-icon-button (click)="downloadPdf(l.id)" title="Descargar PDF">
-            <mat-icon>picture_as_pdf</mat-icon>
-          </button>
-          <button mat-icon-button *ngIf="l.estado === 'pendiente' || l.estado === 'vencida'" (click)="anular(l.id)" title="Anular">
-            <mat-icon>block</mat-icon>
-          </button>
-          <button mat-icon-button color="warn" *ngIf="l.estado !== 'pagada'" (click)="remove(l.id)" title="Eliminar">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>N</th>
+          <th>Contribuyente</th>
+          <th>CUIT</th>
+          <th>Evento</th>
+          <th>Emision</th>
+          <th>Vencimiento</th>
+          <th>Total</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let l of liquidaciones()">
+          <td>{{ l.numero || l.id }}</td>
+          <td>{{ l.contribuyente?.apellido }}, {{ l.contribuyente?.nombre }}</td>
+          <td>{{ l.contribuyente?.cuit }}</td>
+          <td>{{ l.tipo_evento }}</td>
+          <td>{{ l.fecha_emision | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ l.fecha_vencimiento | date: 'dd/MM/yyyy' }}</td>
+          <td class="text-right fw-600">${{ l.total | number: '1.2-2' }}</td>
+          <td><span class="badge badge-{{ l.estado }}">{{ l.estado }}</span></td>
+          <td class="acciones">
+            <button class="btn-icon" (click)="downloadPdf(l.id)" title="Descargar PDF">
+              <i class="material-icons">picture_as_pdf</i>
+            </button>
+            <button class="btn-icon" *ngIf="l.estado === 'pendiente' || l.estado === 'vencida'" (click)="anular(l.id)" title="Anular">
+              <i class="material-icons">block</i>
+            </button>
+            <button class="btn-icon danger" *ngIf="l.estado !== 'pagada'" (click)="remove(l.id)" title="Eliminar">
+              <i class="material-icons">delete</i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
     </table>
-  </mat-card-content>
-</mat-card>
+  </div>
+</div>
