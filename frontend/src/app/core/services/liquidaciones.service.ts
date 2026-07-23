@@ -15,7 +15,6 @@ export interface LiquidacionDetalle {
 
 export interface Liquidacion {
   id: number;
-  numero?: string;
   contribuyente_id: number;
   contribuyente?: Contribuyente;
   tipo_evento: string;

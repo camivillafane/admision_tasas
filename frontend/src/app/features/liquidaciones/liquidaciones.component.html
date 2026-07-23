@@ -23,7 +23,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let l of liquidaciones()">
-          <td>{{ l.numero || l.id }}</td>
+          <td>{{ l.id }}</td>
           <td>{{ l.contribuyente?.apellido }}, {{ l.contribuyente?.nombre }}</td>
           <td>{{ l.contribuyente?.cuit }}</td>
           <td>{{ l.tipo_evento }}</td>

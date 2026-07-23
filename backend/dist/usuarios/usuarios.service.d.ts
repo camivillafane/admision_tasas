@@ -8,8 +8,6 @@ export declare class UsuariosService {
     create(dto: CreateUsuarioDto): Promise<Usuario>;
     findAll(): Promise<Usuario[]>;
     findOne(id: number): Promise<Usuario>;
-    findByUsername(username: string): Promise<Usuario | null>;
     update(id: number, dto: UpdateUsuarioDto): Promise<Usuario>;
     remove(id: number): Promise<Usuario>;
-    cambiarPassword(id: number, passwordActual: string, passwordNueva: string): Promise<Usuario>;
 }

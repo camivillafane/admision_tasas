@@ -1,15 +1,11 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { Contribuyente } from '../../contribuyentes/entities/contribuyente.entity';
 import { LiquidacionDetalle } from './liquidacion-detalle.entity';
-import { Pago } from '../../pagos/entities/pago.entity';
 
 @Entity('liquidaciones')
 export class Liquidacion {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column({ length: 20, nullable: true, unique: true })
-  numero: string;
 
   @Column()
   contribuyente_id: number;
@@ -38,7 +34,4 @@ export class Liquidacion {
 
   @OneToMany(() => LiquidacionDetalle, (detalle) => detalle.liquidacion, { cascade: true })
   detalles: LiquidacionDetalle[];
-
-  @OneToMany(() => Pago, (pago) => pago.liquidacion, { cascade: true })
-  pagos: Pago[];
 }

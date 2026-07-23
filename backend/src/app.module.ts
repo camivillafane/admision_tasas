@@ -8,13 +8,11 @@ import { Contribuyente } from './contribuyentes/entities/contribuyente.entity';
 import { Concepto } from './conceptos/entities/concepto.entity';
 import { Liquidacion } from './liquidaciones/entities/liquidacion.entity';
 import { LiquidacionDetalle } from './liquidaciones/entities/liquidacion-detalle.entity';
-import { Pago } from './pagos/entities/pago.entity';
 import { AuthModule } from './auth/auth.module';
 import { UsuariosModule } from './usuarios/usuarios.module';
 import { ContribuyentesModule } from './contribuyentes/contribuyentes.module';
 import { ConceptosModule } from './conceptos/conceptos.module';
 import { LiquidacionesModule } from './liquidaciones/liquidaciones.module';
-import { PagosModule } from './pagos/pagos.module';
 
 @Module({
   imports: [
@@ -26,7 +24,7 @@ import { PagosModule } from './pagos/pagos.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [Usuario, Contribuyente, Concepto, Liquidacion, LiquidacionDetalle, Pago],
+      entities: [Usuario, Contribuyente, Concepto, Liquidacion, LiquidacionDetalle],
       synchronize: false,
       options: {
         encrypt: false,
@@ -38,7 +36,6 @@ import { PagosModule } from './pagos/pagos.module';
     ContribuyentesModule,
     ConceptosModule,
     LiquidacionesModule,
-    PagosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

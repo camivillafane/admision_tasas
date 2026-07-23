@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { hashSync, compareSync } from 'bcryptjs';
+import { hashSync } from 'bcryptjs';
 import { Usuario } from './entities/usuario.entity';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UpdateUsuarioDto } from './dto/update-usuario.dto';
@@ -39,10 +39,6 @@ export class UsuariosService {
     return usuario;
   }
 
-  findByUsername(username: string) {
-    return this.usuarioRepository.findOne({ where: { username } });
-  }
-
   async update(id: number, dto: UpdateUsuarioDto) {
     const usuario = await this.findOne(id);
 
@@ -62,14 +58,5 @@ export class UsuariosService {
   async remove(id: number) {
     const usuario = await this.findOne(id);
     return this.usuarioRepository.remove(usuario);
-  }
-
-  async cambiarPassword(id: number, passwordActual: string, passwordNueva: string) {
-    const usuario = await this.findOne(id);
-    if (!compareSync(passwordActual, usuario.password_hash)) {
-      throw new BadRequestException('La contraseña actual es incorrecta');
-    }
-    usuario.password_hash = hashSync(passwordNueva, 10);
-    return this.usuarioRepository.save(usuario);
   }
 }

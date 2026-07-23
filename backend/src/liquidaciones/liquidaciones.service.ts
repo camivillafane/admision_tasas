@@ -19,14 +19,6 @@ export class LiquidacionesService {
     private readonly dataSource: DataSource,
   ) {}
 
-  private async generarNumero(): Promise<string> {
-    const result = await this.liquidacionRepository.query(
-      "SELECT ISNULL(MAX(CAST(SUBSTRING(numero, 5, 8) AS INT)), 0) + 1 AS siguiente FROM liquidaciones WHERE numero LIKE 'LIQ-%'",
-    );
-    const siguiente = result[0]?.siguiente ?? 1;
-    return `LIQ-${String(siguiente).padStart(8, '0')}`;
-  }
-
   private async calcularDetalles(
     detallesInput: CreateLiquidacionDto['detalles'] | UpdateLiquidacionDto['detalles'],
   ) {
@@ -78,10 +70,7 @@ export class LiquidacionesService {
       throw new BadRequestException('El total de la liquidación no puede ser negativo');
     }
 
-    const numero = await this.generarNumero();
-
     const liquidacion = this.liquidacionRepository.create({
-      numero,
       contribuyente_id: dto.contribuyente_id,
       tipo_evento: dto.tipo_evento,
       fecha_evento: new Date(dto.fecha_evento),

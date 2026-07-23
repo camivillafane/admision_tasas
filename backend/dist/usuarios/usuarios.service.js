@@ -45,9 +45,6 @@ let UsuariosService = class UsuariosService {
             throw new common_1.NotFoundException('Usuario no encontrado');
         return usuario;
     }
-    findByUsername(username) {
-        return this.usuarioRepository.findOne({ where: { username } });
-    }
     async update(id, dto) {
         const usuario = await this.findOne(id);
         if (dto.username && dto.username !== usuario.username) {
@@ -67,14 +64,6 @@ let UsuariosService = class UsuariosService {
     async remove(id) {
         const usuario = await this.findOne(id);
         return this.usuarioRepository.remove(usuario);
-    }
-    async cambiarPassword(id, passwordActual, passwordNueva) {
-        const usuario = await this.findOne(id);
-        if (!(0, bcryptjs_1.compareSync)(passwordActual, usuario.password_hash)) {
-            throw new common_1.BadRequestException('La contraseña actual es incorrecta');
-        }
-        usuario.password_hash = (0, bcryptjs_1.hashSync)(passwordNueva, 10);
-        return this.usuarioRepository.save(usuario);
     }
 };
 exports.UsuariosService = UsuariosService;

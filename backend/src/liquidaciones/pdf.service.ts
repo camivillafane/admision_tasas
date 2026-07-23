@@ -26,7 +26,7 @@ export class PdfService {
       doc.fontSize(10).font('Helvetica')
         .text('Direccion de Rentas - Tasas Eventuales', 60, 82, { width: 350 });
 
-      const num = `N ${liquidacion.numero || liquidacion.id}`;
+      const num = `N ${liquidacion.id}`;
       doc.fontSize(13).font('Helvetica-Bold')
         .text(num, 60, 63, { width: 475, align: 'right' });
 

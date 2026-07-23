@@ -13,10 +13,8 @@ exports.Liquidacion = void 0;
 const typeorm_1 = require("typeorm");
 const contribuyente_entity_1 = require("../../contribuyentes/entities/contribuyente.entity");
 const liquidacion_detalle_entity_1 = require("./liquidacion-detalle.entity");
-const pago_entity_1 = require("../../pagos/entities/pago.entity");
 let Liquidacion = class Liquidacion {
     id;
-    numero;
     contribuyente_id;
     contribuyente;
     tipo_evento;
@@ -26,17 +24,12 @@ let Liquidacion = class Liquidacion {
     total;
     estado;
     detalles;
-    pagos;
 };
 exports.Liquidacion = Liquidacion;
 __decorate([
     (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
 ], Liquidacion.prototype, "id", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ length: 20, nullable: true, unique: true }),
-    __metadata("design:type", String)
-], Liquidacion.prototype, "numero", void 0);
 __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
@@ -74,10 +67,6 @@ __decorate([
     (0, typeorm_1.OneToMany)(() => liquidacion_detalle_entity_1.LiquidacionDetalle, (detalle) => detalle.liquidacion, { cascade: true }),
     __metadata("design:type", Array)
 ], Liquidacion.prototype, "detalles", void 0);
-__decorate([
-    (0, typeorm_1.OneToMany)(() => pago_entity_1.Pago, (pago) => pago.liquidacion, { cascade: true }),
-    __metadata("design:type", Array)
-], Liquidacion.prototype, "pagos", void 0);
 exports.Liquidacion = Liquidacion = __decorate([
     (0, typeorm_1.Entity)('liquidaciones')
 ], Liquidacion);

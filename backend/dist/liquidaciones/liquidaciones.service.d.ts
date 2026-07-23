@@ -10,7 +10,6 @@ export declare class LiquidacionesService {
     private readonly conceptoRepository;
     private readonly dataSource;
     constructor(liquidacionRepository: Repository<Liquidacion>, detalleRepository: Repository<LiquidacionDetalle>, conceptoRepository: Repository<Concepto>, dataSource: DataSource);
-    private generarNumero;
     private calcularDetalles;
     create(dto: CreateLiquidacionDto): Promise<Liquidacion>;
     private marcarVencidasAutomatico;
