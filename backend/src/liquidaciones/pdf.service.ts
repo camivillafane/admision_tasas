@@ -19,7 +19,6 @@ export class PdfService {
       const evento = new Date(liquidacion.fecha_evento).toLocaleDateString('es-AR');
       const vencimiento = new Date(liquidacion.fecha_vencimiento).toLocaleDateString('es-AR');
 
-      // Header
       doc.rect(50, 50, 495, 60).fill(green);
       doc.fillColor('#ffffff').fontSize(18).font('Helvetica-Bold')
         .text('MUNICIPALIDAD DE CONCORDIA', 60, 60, { width: 350 });
@@ -30,13 +29,11 @@ export class PdfService {
       doc.fontSize(13).font('Helvetica-Bold')
         .text(num, 60, 63, { width: 475, align: 'right' });
 
-      // Estado
       const estadoLabel = liquidacion.estado.toUpperCase();
       doc.fontSize(10).text(`Estado: ${estadoLabel}`, 60, 83, { width: 475, align: 'right' });
 
       let y = 130;
 
-      // Datos contribuyente
       doc.fillColor(green).fontSize(9).font('Helvetica-Bold').text('CONTRIBUYENTE', 50, y);
       y += 14;
       doc.fillColor('#1D1D1B').fontSize(10).font('Helvetica');
@@ -49,7 +46,6 @@ export class PdfService {
 
       y += 24;
 
-      // Datos comprobante
       doc.fillColor(green).fontSize(9).font('Helvetica-Bold').text('COMPROBANTE', 50, y);
       y += 14;
       doc.fillColor('#1D1D1B').fontSize(10).font('Helvetica');
@@ -61,11 +57,9 @@ export class PdfService {
 
       y += 30;
 
-      // Linea separadora
       doc.moveTo(50, y).lineTo(545, y).stroke(green);
       y += 15;
 
-      // Tabla - header
       doc.rect(50, y, 495, 20).fill(green);
       doc.fillColor('#ffffff').fontSize(9).font('Helvetica-Bold');
       doc.text('Codigo', 55, y + 5, { width: 60 });
@@ -75,7 +69,6 @@ export class PdfService {
       doc.text('Monto', 455, y + 5, { width: 85, align: 'right' });
       y += 20;
 
-      // Tabla - filas
       let idx = 0;
       for (const d of liquidacion.detalles || []) {
         const concepto = d.concepto;
@@ -97,17 +90,14 @@ export class PdfService {
         idx++;
       }
 
-      // Linea fin tabla
       doc.moveTo(50, y).lineTo(545, y).stroke('#cccccc');
       y += 20;
 
-      // Total
       doc.fillColor(green).fontSize(14).font('Helvetica-Bold')
         .text(`TOTAL: $${Number(liquidacion.total).toFixed(2)}`, 50, y, { width: 495, align: 'right' });
 
       y += 50;
 
-      // Footer
       doc.moveTo(50, y).lineTo(545, y).stroke('#cccccc');
       y += 10;
       doc.fillColor('#888888').fontSize(8).font('Helvetica')
